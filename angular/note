@@ -1,0 +1,10 @@
+sudo docker run --name angular -d -p 4200:4200 -p 8080:8080 -v ~/workspace/mis-secretariat:/app ar0660/angular
+sudo docker run --rm -v ~/workspace/mis-secretariat:/app ar0660/angular ng build -aot -prod
+
+ng new mis-secretariat --style=scss
+
+ng serve --host 0.0.0.0 --public-host mis.secretariat.taichung.gov.tw:4200
+
+ng lint
+
+ng build -aot -prod
