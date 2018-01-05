@@ -2,13 +2,19 @@
 一些用到的Docker配置
 
 ## 建立Docker network
-- 臺中市政府各機關連線內部系統時，會使用虛擬IP連線，但可能會造成IP衝突，所以建議創一個Network bridge，放到不會衝突的虛擬IP。
+- 臺中市政府各機關連線內部系統時，會使用虛擬IP連線，導致可能造成IP衝突，所以建議創一個Network bridge，設到不會衝突的虛擬IP。
 - sudo docker network create --driver bridge --subnet 10.77.0.0/16 tccg-network
 
 ## 建立Let's Encrypt Volume，並取得伺服器SSL憑證
 - sudo docker volume create letsencrypt
 - sudo docker run --rm -it -p 443:443 -v letsencrypt:/etc/letsencrypt certbot/certbot certonly
 - select Standalone
+
+## 建立Nginx SSL Reverse Proxy to Multiple Domain Name (Name-based Virtual Host)
+- Docker產生web-api及web-app兩個 Web Server Container，只在Docker內部網路運作
+- Docker產生web-proxy Reserve Proxy Server Container，透過Domain name導到web-api、web-app
+- 透過Let's Encrypt申請兩個SSL憑證，在Proxy Server設定檔去設定兩台主機的SSL憑證
+- 更新時間：2018.1.7
 
 ## 蒐集Docker logs可透過gelf日誌引擎，透過gelf via UDP送到E.L.K
 ### 先啟動ELK
@@ -34,6 +40,10 @@
 - sudo docker build -t ar0660/angular .
 ### Angular-Cli操作
 - sudo docker run --rm -v ~/workspace/mis-secretariat:/app ar0660/angular ng [CMD]...
+- ng new mis-secretariat --style=scss
+- ng serve --host 0.0.0.0 --public-host mis.secretariat.taichung.gov.tw:80
+- ng lint
+- ng build -aot -prod
 ### yarn操作
 - sudo docker run --rm -v ~/workspace/mis-secretariat:/app ar0660/angular yarn [CMD]...
 ### 產生ng serve Container，一直掛載在伺服器上
