@@ -10,6 +10,12 @@
 - sudo docker run --rm -it -p 443:443 -v letsencrypt:/etc/letsencrypt certbot/certbot certonly
 - select Standalone
 
+## 建立Nginx SSL Reverse Proxy to Multiple Domain Name (Name-based Virtual Host)
+- Docker產生web-api及web-app兩個 Web Server Container，只在Docker內部網路運作
+- Docker產生web-proxy Reserve Proxy Server Container，透過Domain name導到web-api、web-app
+- 透過Let's Encrypt申請兩個SSL憑證，在Proxy Server設定檔去設定兩台主機的SSL憑證
+- 更新時間：2018.1.7
+
 ## 蒐集Docker logs可透過gelf日誌引擎，透過gelf via UDP送到E.L.K
 ### 先啟動ELK
 - cd ~/docker/elk
