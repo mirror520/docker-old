@@ -20,6 +20,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - letsencrypt:/etc/letsencrypt:ro
+      - ./nginx/proxy/conf/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/proxy/conf/default.conf:/etc/nginx/conf.d/default.conf:ro
     logging:
       driver: gelf
@@ -32,6 +33,7 @@ services:
     image: nginx:alpine
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - letsencrypt:/etc/letsencrypt:ro
       - ./nginx/app/conf/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/app/conf/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx/app/html/mis-secretariat:/usr/share/nginx/html/mis-secretariat:ro
@@ -42,7 +44,7 @@ services:
         tag: web-app
     environment:
       - NGINX_HOST=mis.secretariat.taichung.gov.tw
-      - NGINX_PORT=80
+      - NGINX_PORT=443
     container_name: web-app
     
   web-api:
@@ -54,6 +56,7 @@ services:
       - swagger-ui
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - letsencrypt:/etc/letsencrypt:ro
       - ./nginx/api/conf/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/api/conf/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx/api/html/api:/usr/share/nginx/html/api
@@ -64,7 +67,7 @@ services:
         tag: web-api
     environment:
       - NGINX_HOST=api.secret.taichung.gov.tw
-      - NGINX_PORT=80
+      - NGINX_PORT=443
     container_name: web-api
 
   php-fpm:
